@@ -2,12 +2,11 @@ var express = require("express");
 var app = express();
 var server = require("http").createServer(app);
 var io = require("socket.io").listen(server);
-require("./keys.js");
 var tw = require("node-tweet-stream")({
-    consumer_key: k1,
-    consumer_secret: k2,
-    token: k3,
-    token_secret: k4
+    consumer_key: process.env.k1,
+    consumer_secret: process.env.k2,
+    token: process.env.k3,
+    token_secret: process.env.k4
   });
 
 var port = process.env.PORT || 3000;
