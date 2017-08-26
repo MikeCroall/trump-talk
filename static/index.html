@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Trump Talk</title>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+		<link href="index.css" type="text/css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="content-wrap">
+			<p>
+				Since you loaded this page, there have been
+				<div id="tweet-count">0</div>
+				tweets regarding
+				<div id="track-name-display">Trump</div>
+			</p>
+			<div id="counts">
+				<div id="word-clm" class="clm">
+				</div>
+				<div id="hashtag-clm" class="clm">
+				</div>
+			</div>
+			<button type="button" onclick="updateCountDisplay()">Force update of counts</button>
+		</div>
+		<script src="index.js"></script>
+	</body>
+</html>

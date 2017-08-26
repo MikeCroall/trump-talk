@@ -1,37 +1,34 @@
-var app = require('express')();
-var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
-
-require('./keys.js');
-var tw = require('node-tweet-stream')({
+var express = require("express");
+var app = express();
+var server = require("http").createServer(app);
+var io = require("socket.io").listen(server);
+require("./keys.js");
+var tw = require("node-tweet-stream")({
     consumer_key: k1,
     consumer_secret: k2,
     token: k3,
     token_secret: k4
   });
 
-var track = 'trump';
+var port = process.env.PORT || 3000;
 
-tw.track(track);
+// Track tweets about "trump", which will mostly be about Donald Trump, but may not all be...
+tw.track("trump");
 
-tw.on('tweet', function(tweet){
-  io.emit('tweet', tweet);
+// Pass all tweets on to clients (each client will have joined at a different time, and thus have different word/tweet counts)
+tw.on("tweet", function(tweet) {
+  io.emit("tweet", tweet.text);
 });
 
-io.on('connection', function(socket){
-	socket.on('track-name-change', function(newName){
-		tw.untrack(track);
-		tw.track(newName);
-		track = newName;
-		console.log("Tracking:", tw.tracking());
-	});
+// Home HTML and JS routes
+app.use(express.static("static"));
+
+// 404 route
+app.get("*", function(req, res) {
+    res.redirect('/');
 });
 
-
-app.get('/', function(req, res){
-	res.sendFile(__dirname + '/index.html');
-});
-
-server.listen(3000, function(){
-	console.log('Listening on port 3000');
+// Start server
+server.listen(port, function() {
+	console.log("Listening on port " + port);
 });
